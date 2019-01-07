@@ -17,10 +17,13 @@ class Settings(object):
         return self.env.str("LOGOUT_URL", "/logout")
 
     @property
-    def username_field(self):
+    def login_username_field(self):
         return self.env.str("LOGIN_USERNAME_FIELD", "username")
 
     @property
-    def password_field(self):
+    def login_password_field(self):
         return self.env.str("LOGIN_PASSWORD_FIELD", "password")
 
+    @property
+    def login_password_default(self):
+        return self.env.str("LOGIN_PASSWORD_FIELD", "test")
