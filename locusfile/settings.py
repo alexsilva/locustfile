@@ -9,6 +9,10 @@ class Settings(object):
         self.env.read_env(path=path)
 
     @property
+    def login_users_jsonfile(self):
+        return self.env.str("LOGIN_USERS_JSONFILE", "users.json")
+
+    @property
     def login_url(self):
         return self.env.str("LOGIN_URL", "/login")
 
