@@ -13,11 +13,13 @@ class UserBehaviour(TaskSet):
 
     def on_start(self):
         """ on_start is called when a Locust start before any task is scheduled """
-        self.login()
+        if self.settings.login_enable:
+            self.login()
 
     def on_stop(self):
         """ on_stop is called when the TaskSet is stopping """
-        self.logout()
+        if self.settings.login_enable:
+            self.logout()
 
     def login(self):
         auth = {self.settings.login_username_field: self.user['fields']['username'],

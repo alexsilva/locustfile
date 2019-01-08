@@ -13,6 +13,10 @@ class Settings(object):
         return self.env.str("LOGIN_USERS_JSONFILE", "users.json")
 
     @property
+    def login_enable(self):
+        return self.env.bool("LOGIN_ENABLE", True)
+
+    @property
     def login_url(self):
         return self.env.str("LOGIN_URL", "/login")
 
