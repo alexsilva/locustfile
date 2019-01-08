@@ -30,4 +30,4 @@ class Settings(object):
 
     @property
     def login_password_default(self):
-        return self.env.str("LOGIN_PASSWORD_FIELD", "test")
+        return self.env.str("LOGIN_PASSWORD_DEFAULT", "test")
