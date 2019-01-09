@@ -6,7 +6,7 @@ from pyquery import PyQuery
 from six.moves.urllib.parse import urlparse
 
 from .settings import Settings
-from .users import User
+from .users import User, UserData
 
 
 class UserBehaviour(TaskSequence):
@@ -14,7 +14,7 @@ class UserBehaviour(TaskSequence):
     def __init__(self, *args, **kwargs):
         super(UserBehaviour, self).__init__(*args, **kwargs)
         self.settings = self.locust.settings
-        self.user = self.locust.user.random()
+        self.user = self.locust.user_data.random()
         self.links = []
 
     def on_start(self):
@@ -28,12 +28,12 @@ class UserBehaviour(TaskSequence):
             self.logout()
 
     def login(self):
-        auth = {self.settings.login_username_field: self.user['fields']['username'],
+        auth = {self.settings.login_username_field: self.user.username,
                 self.settings.login_password_field: self.settings.login_password_default}
         self.client.post(self.settings.login_url, auth)
 
     def logout(self):
-        auth = {self.settings.login_username_field: self.user['fields']['username'],
+        auth = {self.settings.login_username_field: self.user.username,
                 self.settings.login_password_field: self.settings.login_password_default}
         self.client.post(self.settings.logout_url, auth)
 
@@ -41,7 +41,7 @@ class UserBehaviour(TaskSequence):
     def index(self):
         response = self.client.get("/")
         if self.settings.verbose:
-            print "[{0[fields][username]}] {1.status_code} | {1.url}".format(self.user, response)
+            print "[{0.user.username}] {1.status_code} | {1.url}".format(self, response)
         if response.status_code == 200:
             pq = PyQuery(response.content)
             self.links = []
@@ -70,5 +70,5 @@ class WebsiteUser(HttpLocust):
     def __init__(self, *args, **kwargs):
         super(WebsiteUser, self).__init__(*args, **kwargs)
         self.settings = Settings()
-        self.user = User(self.settings.login_users_jsonfile)
+        self.user_data = UserData(self.settings.login_users_jsonfile)
         self.domain = urlparse(self.client.base_url)

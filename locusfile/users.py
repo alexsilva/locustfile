@@ -3,7 +3,17 @@ import random
 
 
 class User(object):
+    """User interface"""
+    def __init__(self, **kwargs):
+        self.kwargs = kwargs
+
+    def __getattr__(self, name):
+        return object.__getattribute__(self, "kwargs")['fields'][name]
+
+
+class UserData(object):
     """Parser and getter users"""
+
     def __init__(self, filepath):
         with open(filepath, 'rb') as jfile:
             data = jfile.read()
@@ -21,4 +31,4 @@ class User(object):
 
     def random(self):
         """Choose a random user"""
-        return random.choice(self.data)
+        return User(**random.choice(self.data))
