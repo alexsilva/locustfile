@@ -28,12 +28,12 @@ class UserBehaviour(TaskSequence):
             self.logout()
 
     def login(self):
-        auth = {self.settings.login_username_field: self.user.username,
+        auth = {self.settings.login_username_field: getattr(self.user, self.settings.username_field_name),
                 self.settings.login_password_field: self.settings.login_password_default}
         self.client.post(self.settings.login_url, auth)
 
     def logout(self):
-        auth = {self.settings.login_username_field: self.user.username,
+        auth = {self.settings.login_username_field: getattr(self.user, self.settings.username_field_name),
                 self.settings.login_password_field: self.settings.login_password_default}
         self.client.post(self.settings.logout_url, auth)
 
