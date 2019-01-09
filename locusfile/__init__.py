@@ -41,7 +41,8 @@ class UserBehaviour(TaskSequence):
     def index(self):
         response = self.client.get("/")
         if self.settings.verbose:
-            print "[{0.user.username}] {1.status_code} | {1.url}".format(self, response)
+            username = getattr(self.user, self.settings.username_field_name)
+            print "{0} | {1.status_code} | {1.url}".format(username, response)
         if response.status_code == 200:
             pq = PyQuery(response.content)
             self.links = []
