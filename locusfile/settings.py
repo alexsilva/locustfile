@@ -9,6 +9,10 @@ class Settings(object):
         self.env.read_env(path=path)
 
     @property
+    def verbose(self):
+        return self.env.bool("VERBOSE", False)
+
+    @property
     def login_users_jsonfile(self):
         return self.env.str("LOGIN_USERS_JSONFILE", "users.json")
 

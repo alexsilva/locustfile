@@ -40,7 +40,8 @@ class UserBehaviour(TaskSequence):
     @seq_task(1)
     def index(self):
         response = self.client.get("/")
-        print "[{0[fields][username]}] {1.status_code} | {1.url}".format(self.user, response)
+        if self.settings.verbose:
+            print "[{0[fields][username]}] {1.status_code} | {1.url}".format(self.user, response)
         if response.status_code == 200:
             pq = PyQuery(response.content)
             self.links = []
@@ -54,7 +55,8 @@ class UserBehaviour(TaskSequence):
     def random_link(self):
         try:
             link = random.choice(self.links)
-            print link
+            if self.settings.verbose:
+                print link
             self.client.get(link)
         except IndexError:
             pass
